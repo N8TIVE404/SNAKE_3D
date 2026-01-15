@@ -3,7 +3,10 @@
 
 # include <GLFW/glfw3.h>
 
+extern int width;
+extern int height;
+
 GLFWwindow *setup_window(const char*);
-void terminate_window(GLFWwindow*);
+void destroy_window(GLFWwindow*);
 
 # endif

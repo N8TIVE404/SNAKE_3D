@@ -10,15 +10,13 @@
  *
  */
 
-//TODO: Implement different coloring for output based on log level
-
 # include <stdarg.h>
 # include <string.h>
 # include <stdio.h>
 
 # include "logger.h"
 
-void log_output(logLevel level, char *message, ...){
+void log_output(logLevel level, const char *color, char *message, ...){
     char output[32000];
     memset(output, 0, sizeof(output));
 
@@ -30,5 +28,5 @@ void log_output(logLevel level, char *message, ...){
     char *levels[5] = {"FATAL", "ERROR", "WARNING", "DEBUG", "INFO"};
     char outputMessage[32100];
     snprintf(outputMessage, sizeof(outputMessage), "[%s] %s\n", levels[level], output);
-    printf("%s", outputMessage);
+    printf("%s%s%s", color, outputMessage, COLOR_RESET);
 }

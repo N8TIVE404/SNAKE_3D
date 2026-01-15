@@ -1,3 +1,6 @@
 assets/models
 assets/textures
+assets/sphere
 dependencies/
+build/
+.cache/
