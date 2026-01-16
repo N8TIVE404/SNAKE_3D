@@ -5,6 +5,7 @@
 # include "render.h"
 # include "models.h"
 # include "camera.h"
+# include "input.h"
 
 int
 main(void){
@@ -23,6 +24,8 @@ main(void){
         glUseProgram(shader);
         
         draw_mesh(&cam, &pos1, &sphere, shader);
+
+        process_kbinput(window);
       
         glfwPollEvents();
         glfwSwapBuffers(window);

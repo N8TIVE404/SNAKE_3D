@@ -5,6 +5,7 @@
 # include "logger.h"
 
 void setup_mesh(Mesh *mesh){
+    DEBUG_LOG("Received a sphere with %d vertices and %d indices.", mesh->vertexCount, mesh->indexCount);
     glGenVertexArrays(1, &mesh->vao);
     glBindVertexArray(mesh->vao);
 
@@ -19,10 +20,12 @@ void setup_mesh(Mesh *mesh){
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexEntry), (void *)0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexEntry), (void *)(sizeof(float) * 3));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexEntry), (void *)(sizeof(float) * 6));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(sizeof(float) * 3));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)(sizeof(float) * 6));
     glBindVertexArray(0);
+
+    DEBUG_LOG("Finished setting up mesh. VAO: %u, VBO: %u, EBO: %u", mesh->vao, mesh->vbo, mesh->ebo);
 }
 
 Mesh sphere_mesh(int sectors, int stacks, const char *path){
@@ -39,7 +42,6 @@ Mesh sphere_mesh(int sectors, int stacks, const char *path){
 
     INFO_LOG("Setting up sphere mesh...");
     setup_mesh(&mesh);
-    INFO_LOG("Sphere mesh set up.");
 
     return mesh;
 }

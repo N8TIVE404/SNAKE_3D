@@ -12,6 +12,7 @@ const char *textureStrings[] = {
 };
 
 void draw_mesh(Camera *cam, Position *pos, Mesh *mesh, GLuint shader){
+    DEBUG_LOG("Drawing mesh with VAO: %u, VBO: %u, EBO: %u and Shader: %u. The mesh has %zu vertices and %zu indices.", mesh->vao, mesh->vbo, mesh->ebo, shader, mesh->vertexCount, mesh->indexCount);
     glUseProgram(shader);
 
     int dCount = 1;
@@ -28,7 +29,6 @@ void draw_mesh(Camera *cam, Position *pos, Mesh *mesh, GLuint shader){
         GLint uniformLoc = glGetUniformLocation(shader, uniformName);
         if(uniformLoc < 0){
             ERROR_LOG("Unable to get texture uniform location for %s.", uniformName);
-            return;
         }
 
         glUniform1i(uniformLoc, i);
@@ -45,8 +45,9 @@ void draw_mesh(Camera *cam, Position *pos, Mesh *mesh, GLuint shader){
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, (float *)pos->model);
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, (float *)pos->projection);
 
-    glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(mesh->vao);
     glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_INT, (void *)0);
+
+    glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(0);
 }

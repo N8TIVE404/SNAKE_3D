@@ -1,6 +1,7 @@
 # include <math.h>
 
 # include "primitives.h"
+# include "logger.h"
 
 Sphere generate_sphere(int sectors, int stacks){
     Sphere s;
@@ -18,7 +19,7 @@ Sphere generate_sphere(int sectors, int stacks){
     size_t vertexCount = 0;
 
     for(int i = 0; i <= stacks; i++){
-        stackAngle = (PI / 2) - (1 - cStack);
+        stackAngle = (PI / 2) - (i - cStack);
         xy = r * cosf(stackAngle);
 
         for(int j = 0; j <= sectors; j++){
@@ -65,5 +66,6 @@ Sphere generate_sphere(int sectors, int stacks){
     s.vertexCount = vertexCount;
     s.indexCount = indexCount;
 
+    INFO_LOG("Generated a sphere with %d vertices and %d indices.", vertexCount, indexCount);
     return s;
 }
