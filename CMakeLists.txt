@@ -17,31 +17,13 @@ find_package(assimp REQUIRED)
 
 # 3. Include Directories
 include_directories(
-    core
-    input
-    dependencies
-    geometry
-    render
-    resources
-    scene
     ${GLFW_INCLUDE_DIRS}
     ${ASSIMP_INCLUDE_DIRS}
 )
 
 # 4. Collect Source Files
 set(SOURCES
-    app/main.c
-    core/window.c
-    core/geometry_calculation.c
-    core/logger.c
-    input/input.c
-    dependencies/glad.c
-    geometry/models.c
-    geometry/primitives.c
-    render/render.c
-    resources/textures.c
-    resources/shaders.c
-    scene/camera.c
+  app/main.c
 )
 
 # 5. Create Executable
