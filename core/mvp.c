@@ -16,22 +16,22 @@ void calculate_model(Camera *cam, Position *pos) {
 void calculate_view(Camera *cam, Position *pos) {
   glm_mat4_identity(pos->view);
   vec3 temp;
-  glm_vec3_sub(cam->position, cam->front, temp);
+  glm_vec3_add(cam->position, cam->front, temp);
   glm_lookat(cam->position, temp, cam->up, pos->view);
 }
 
 void calculate_projection(Camera *cam, Position *pos) {
   glm_mat4_identity(pos->projection);
-  glm_perspective(cam->fov, (float)width / height, 0.01f, 1000.0f,
+  glm_perspective(cam->fov, (float)width / height, 1.0f, 100.0f,
                   pos->projection);
 }
 
-void calculate_mvp(Camera *cam, Position *pos) {
+void calculate_mvp(Camera *cam, Position *pos, mat4 *mvp) {
   calculate_model(cam, pos);
   calculate_view(cam, pos);
   calculate_projection(cam, pos);
   mat4 temp;
   glm_mat4_identity(temp);
   glm_mat4_mul(pos->view, pos->model, temp);
-  glm_mat4_mul(pos->projection, temp, pos->projection);
+  glm_mat4_mul(pos->projection, temp, (vec4 *)mvp);
 }

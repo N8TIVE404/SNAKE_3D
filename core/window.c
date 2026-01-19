@@ -49,3 +49,8 @@ GLFWwindow *initilaize_window() {
 
   return window;
 }
+
+void destroy_window(GLFWwindow *window) {
+  glfwDestroyWindow(window);
+  glfwTerminate();
+}

@@ -7,5 +7,6 @@ extern int width;
 extern int height;
 
 GLFWwindow *initilaize_window();
+void destroy_window(GLFWwindow *);
 
 #endif

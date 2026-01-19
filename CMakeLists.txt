@@ -7,8 +7,14 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
 endif()
+
+
+#if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+#   add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
+#    add_link_options(-fsanitize=address)
+#endif()
 
 # 2. Find Packages (Required for 3D)
 find_package(OpenGL REQUIRED)
@@ -17,13 +23,26 @@ find_package(assimp REQUIRED)
 
 # 3. Include Directories
 include_directories(
-    ${GLFW_INCLUDE_DIRS}
+    scene/
+    core/
+    dependencies/
+    loaders/
+    geometry/
+    ${GLFW_INCLUDE_DIRSW_INCLUDE_DIRS}
     ${ASSIMP_INCLUDE_DIRS}
 )
 
 # 4. Collect Source Files
 set(SOURCES
   app/main.c
+  scene/camera.c
+  core/mvp.c
+  core/logger.c
+  core/window.c
+  dependencies/glad.c
+  loaders/shaders.c
+  geometry/mesh.c
+  geometry/primitives.c
 )
 
 # 5. Create Executable
