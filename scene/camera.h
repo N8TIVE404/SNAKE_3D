@@ -16,9 +16,9 @@ typedef struct Camera {
   vec3 front;
   vec3 up;
   vec3 target;
-  float fov, speed, yaw, pitch;
+  float fov, speed, yaw, pitch, deltaTime;
 } Camera;
 
-Camera initilaize_camera(float, Position *);
+Camera initialize_camera(float, vec3);
 
 #endif

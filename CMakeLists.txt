@@ -28,6 +28,7 @@ include_directories(
     dependencies/
     loaders/
     geometry/
+    input/
     ${GLFW_INCLUDE_DIRSW_INCLUDE_DIRS}
     ${ASSIMP_INCLUDE_DIRS}
 )
@@ -43,6 +44,7 @@ set(SOURCES
   loaders/shaders.c
   geometry/mesh.c
   geometry/primitives.c
+  input/input.c
 )
 
 # 5. Create Executable

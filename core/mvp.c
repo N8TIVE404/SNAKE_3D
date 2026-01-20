@@ -33,5 +33,5 @@ void calculate_mvp(Camera *cam, Position *pos, mat4 *mvp) {
   mat4 temp;
   glm_mat4_identity(temp);
   glm_mat4_mul(pos->view, pos->model, temp);
-  glm_mat4_mul(pos->projection, temp, (vec4 *)mvp);
+  glm_mat4_mul(pos->projection, temp, *mvp);
 }
