@@ -4,14 +4,18 @@
 #include "camera.h"
 #include "input.h"
 #include "logger.h"
+#include "mesh.h"
 #include "mvp.h"
+#include "primitives.h"
 #include "shaders.h"
 #include "window.h"
 
+/*
 const float triangles[] = {0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
                            0.0f, 0.5f, 0.0f, 0.5f, 0.5f, 0.0};
 
 const unsigned int indices[] = {0, 1, 2, 1, 2, 3};
+*/
 
 int main(void) {
   GLFWwindow *window = initilaize_window();
@@ -23,6 +27,8 @@ int main(void) {
   float lastTime = 0.0f;
   Camera cam = initialize_camera(45.0f, (vec3){0.0f, 0.0f, 3.0f});
 
+  Cube cube = setup_cube();
+
   glfwSetWindowUserPointer(window, &cam);
 
   GLuint vao, vbo, ebo;
@@ -33,14 +39,19 @@ int main(void) {
   glBindVertexArray(vao);
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube.indices), cube.indices,
                GL_STATIC_DRAW);
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(triangles), triangles, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(cube.vertices), cube.vertices,
+               GL_STATIC_DRAW);
 
   glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void *)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)0);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                        (void *)(sizeof(float) * 3));
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
+                        (void *)(sizeof(float) * 6));
 
   glBindVertexArray(0);
 
@@ -48,7 +59,7 @@ int main(void) {
   glm_vec3_copy((vec3){0.0f, 0.0f, 0.0f}, pos.location);
   glm_vec3_copy((vec3){0.0f, 1.0f, 0.0f}, pos.axis);
   glm_vec3_copy((vec3){0.5f, 0.5f, 0.5f}, pos.scale);
-  pos.angle = 0.0f;
+  pos.angle = 20.0f;
 
   GLuint uniformMvp = glGetUniformLocation(shader, "mvp");
 
@@ -59,6 +70,7 @@ int main(void) {
 
     mat4 mvp;
     calculate_mvp(&cam, &pos, &mvp);
+    pos.angle += 1.0f;
 
     glClearColor(0.6f, 0.2f, 0.6f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -68,7 +80,7 @@ int main(void) {
 
     glUniformMatrix4fv(uniformMvp, 1, GL_FALSE, (float *)mvp);
 
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
     process_kbinput(window);
     glfwPollEvents();

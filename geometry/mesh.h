@@ -4,17 +4,12 @@
 #include "primitives.h"
 #include <cglm/cglm.h>
 
-typedef struct Vertex {
-  vec3 position;
-  vec3 normal;
-  vec2 textureCoordinates;
-} Vertex;
-
+struct Vertex;
 typedef struct Mesh {
-  Vertex *vertices;
+  struct Vertex *vertices;
   unsigned int *indices;
 } Mesh;
 
-PrimitiveDefinition setup_cube();
+Cube setup_cube();
 
 #endif

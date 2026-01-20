@@ -1,5 +1,4 @@
 #include "primitives.h"
-#include "mesh.h"
 
 const float cubeVertices[] = {
     // ---- Front face (Z+) ----

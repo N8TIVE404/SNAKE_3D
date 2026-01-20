@@ -1,6 +1,7 @@
 #ifndef PRIMITIVES_H
 #define PRIMITIVES_H
 
+#include <cglm/cglm.h>
 #include <stddef.h>
 #include <stdlib.h>
 
@@ -16,12 +17,17 @@ extern size_t indexCount;
 
 extern const float cubeLocations[][LOCATION_COMPONENTS];
 
-struct Vertex;
-typedef struct PrimitiveDefinition {
+typedef struct Vertex {
+  vec3 position;
+  vec3 normal;
+  vec2 textureCoordinates;
+} Vertex;
+
+typedef struct Cube {
   size_t vertexCount;
   size_t indexCount;
-  struct Vertex *vertices;
-  unsigned int *indices;
-} PrimitiveDefinition;
+  Vertex vertices[24];
+  unsigned int indices[36];
+} Cube;
 
 #endif
