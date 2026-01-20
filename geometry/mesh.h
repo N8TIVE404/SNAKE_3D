@@ -11,5 +11,5 @@ typedef struct Mesh {
 } Mesh;
 
 Cube setup_cube();
-
+void setup_sphere(struct Sphere *);
 #endif

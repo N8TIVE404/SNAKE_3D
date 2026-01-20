@@ -5,10 +5,8 @@ layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec3 aTexture;
 
 uniform mat4 mvp;
-out vec3 normal;
 
 void main(){
   gl_Position = mvp * vec4(aPosition, 1.0f);
-  normal = aNormal;
 }
 

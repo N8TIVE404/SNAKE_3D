@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #define LOCATION_COMPONENTS 3
+#define PI 3.14159265358979323846
 
 extern const float cubeVertices[];
 extern const size_t verticesSize;
@@ -24,10 +25,21 @@ typedef struct Vertex {
 } Vertex;
 
 typedef struct Cube {
-  size_t vertexCount;
-  size_t indexCount;
   Vertex vertices[24];
+  size_t vertexCount;
   unsigned int indices[36];
+  size_t indexCount;
+  unsigned int vao, ebo, vbo;
 } Cube;
+
+typedef struct Sphere {
+  Vertex *vertices;
+  size_t vertexCount;
+  unsigned int *indices;
+  size_t indexCount;
+  unsigned int vao, vbo, ebo;
+} Sphere;
+
+void populate_sphere(Sphere *, int, int);
 
 #endif

@@ -10,13 +10,6 @@
 #include "shaders.h"
 #include "window.h"
 
-/*
-const float triangles[] = {0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f,
-                           0.0f, 0.5f, 0.0f, 0.5f, 0.5f, 0.0};
-
-const unsigned int indices[] = {0, 1, 2, 1, 2, 3};
-*/
-
 int main(void) {
   GLFWwindow *window = initilaize_window();
 
@@ -28,32 +21,10 @@ int main(void) {
   Camera cam = initialize_camera(45.0f, (vec3){0.0f, 0.0f, 3.0f});
 
   Cube cube = setup_cube();
+  Sphere sphere;
+  setup_sphere(&sphere);
 
   glfwSetWindowUserPointer(window, &cam);
-
-  GLuint vao, vbo, ebo;
-  glGenBuffers(1, &vbo);
-  glGenBuffers(1, &ebo);
-  glGenVertexArrays(1, &vao);
-
-  glBindVertexArray(vao);
-
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube.indices), cube.indices,
-               GL_STATIC_DRAW);
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(cube.vertices), cube.vertices,
-               GL_STATIC_DRAW);
-
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                        (void *)(sizeof(float) * 3));
-  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-                        (void *)(sizeof(float) * 6));
-
-  glBindVertexArray(0);
 
   Position pos;
   glm_vec3_copy((vec3){0.0f, 0.0f, 0.0f}, pos.location);
@@ -61,26 +32,42 @@ int main(void) {
   glm_vec3_copy((vec3){0.5f, 0.5f, 0.5f}, pos.scale);
   pos.angle = 20.0f;
 
+  Position pos2;
+  glm_vec3_copy((vec3){1.0f, 1.0f, 0.0f}, pos2.location);
+  glm_vec3_copy((vec3){0.0f, 1.0f, 0.0f}, pos2.axis);
+  glm_vec3_copy((vec3){0.5f, 0.5f, 0.5f}, pos2.scale);
+  pos2.angle = 20.0f;
+
   GLuint uniformMvp = glGetUniformLocation(shader, "mvp");
+  glEnable(GL_DEPTH_TEST);
 
   while (!glfwWindowShouldClose(window)) {
     float current = glfwGetTime();
     cam.deltaTime = current - lastTime;
     lastTime = current;
 
-    mat4 mvp;
-    calculate_mvp(&cam, &pos, &mvp);
-    pos.angle += 1.0f;
-
     glClearColor(0.6f, 0.2f, 0.6f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(shader);
-    glBindVertexArray(vao);
+    glBindVertexArray(sphere.vao);
+
+    mat4 mvp;
+    calculate_mvp(&cam, &pos2, &mvp);
+    pos2.angle += 1.0f;
 
     glUniformMatrix4fv(uniformMvp, 1, GL_FALSE, (float *)mvp);
 
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, (int)sphere.indexCount, GL_UNSIGNED_INT, 0);
+
+    glBindVertexArray(cube.vao);
+    glm_mat4_identity(mvp);
+    calculate_mvp(&cam, &pos, &mvp);
+    pos2.angle += 2.0f;
+
+    glUniformMatrix4fv(uniformMvp, 1, GL_FALSE, (float *)mvp);
+
+    glDrawElements(GL_TRIANGLES, (int)cube.indexCount, GL_UNSIGNED_INT, 0);
 
     process_kbinput(window);
     glfwPollEvents();
@@ -89,6 +76,8 @@ int main(void) {
 
   INFO_LOG("Destroying window and terminating GLFW...");
   destroy_window(window);
+  free(sphere.vertices);
+  free(sphere.indices);
 
   return 0;
 }
