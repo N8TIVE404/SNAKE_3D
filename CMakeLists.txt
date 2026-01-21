@@ -29,6 +29,7 @@ include_directories(
     loaders/
     geometry/
     input/
+    render/
     ${GLFW_INCLUDE_DIRSW_INCLUDE_DIRS}
     ${ASSIMP_INCLUDE_DIRS}
 )
@@ -42,9 +43,12 @@ set(SOURCES
   core/window.c
   dependencies/glad.c
   loaders/shaders.c
+  loaders/textures.c
   geometry/mesh.c
   geometry/primitives.c
+  dependencies/stb.c
   input/input.c
+  render/render.c
 )
 
 # 5. Create Executable

@@ -1,208 +1,40 @@
 #include "primitives.h"
+#include "textures.h"
+#include <glad/glad.h>
+#include <string.h>
 
+// Cube co-ordinates
 const float cubeVertices[] = {
-    // ---- Front face (Z+) ----
-    -0.5f,
-    -0.5f,
-    0.5f,
-    0,
-    0,
-    1,
-    0,
-    0,
-    0.5f,
-    -0.5f,
-    0.5f,
-    0,
-    0,
-    1,
-    1,
-    0,
-    0.5f,
-    0.5f,
-    0.5f,
-    0,
-    0,
-    1,
-    1,
-    1,
-    -0.5f,
-    0.5f,
-    0.5f,
-    0,
-    0,
-    1,
-    0,
-    1,
-    // ---- Back face (Z-) ----
-    0.5f,
-    -0.5f,
-    -0.5f,
-    0,
-    0,
-    -1,
-    0,
-    0,
-    -0.5f,
-    -0.5f,
-    -0.5f,
-    0,
-    0,
-    -1,
-    1,
-    0,
-    -0.5f,
-    0.5f,
-    -0.5f,
-    0,
-    0,
-    -1,
-    1,
-    1,
-    0.5f,
-    0.5f,
-    -0.5f,
-    0,
-    0,
-    -1,
-    0,
-    1,
+    // positions          // normals           // texture coords
+    -0.5f, -0.5f, -0.5f, 0.0f,  0.0f,  -1.0f, 0.0f, 0.0f, // 0
+    0.5f,  -0.5f, -0.5f, 0.0f,  0.0f,  -1.0f, 1.0f, 0.0f, // 1
+    0.5f,  0.5f,  -0.5f, 0.0f,  0.0f,  -1.0f, 1.0f, 1.0f, // 2
+    -0.5f, 0.5f,  -0.5f, 0.0f,  0.0f,  -1.0f, 0.0f, 1.0f, // 3
 
-    // ---- Left face (X-) ----
-    -0.5f,
-    -0.5f,
-    -0.5f,
-    -1,
-    0,
-    0,
-    0,
-    0,
-    -0.5f,
-    -0.5f,
-    0.5f,
-    -1,
-    0,
-    0,
-    1,
-    0,
-    -0.5f,
-    0.5f,
-    0.5f,
-    -1,
-    0,
-    0,
-    1,
-    1,
-    -0.5f,
-    0.5f,
-    -0.5f,
-    -1,
-    0,
-    0,
-    0,
-    1,
+    -0.5f, -0.5f, 0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, // 4
+    0.5f,  -0.5f, 0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 0.0f, // 5
+    0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f, // 6
+    -0.5f, 0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f, // 7
 
-    // ---- Right face (X+) ----
-    0.5f,
-    -0.5f,
-    0.5f,
-    1,
-    0,
-    0,
-    0,
-    0,
-    0.5f,
-    -0.5f,
-    -0.5f,
-    1,
-    0,
-    0,
-    1,
-    0,
-    0.5f,
-    0.5f,
-    -0.5f,
-    1,
-    0,
-    0,
-    1,
-    1,
-    0.5f,
-    0.5f,
-    0.5f,
-    1,
-    0,
-    0,
-    0,
-    1,
+    -0.5f, 0.5f,  0.5f,  -1.0f, 0.0f,  0.0f,  1.0f, 0.0f, // 8
+    -0.5f, 0.5f,  -0.5f, -1.0f, 0.0f,  0.0f,  1.0f, 1.0f, // 9
+    -0.5f, -0.5f, -0.5f, -1.0f, 0.0f,  0.0f,  0.0f, 1.0f, // 10
+    -0.5f, -0.5f, 0.5f,  -1.0f, 0.0f,  0.0f,  0.0f, 0.0f, // 11
 
-    // ---- Bottom face (Y-) ----
-    -0.5f,
-    -0.5f,
-    -0.5f,
-    0,
-    -1,
-    0,
-    0,
-    0,
-    0.5f,
-    -0.5f,
-    -0.5f,
-    0,
-    -1,
-    0,
-    1,
-    0,
-    0.5f,
-    -0.5f,
-    0.5f,
-    0,
-    -1,
-    0,
-    1,
-    1,
-    -0.5f,
-    -0.5f,
-    0.5f,
-    0,
-    -1,
-    0,
-    0,
-    1,
+    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, // 12
+    0.5f,  0.5f,  -0.5f, 1.0f,  0.0f,  0.0f,  1.0f, 1.0f, // 13
+    0.5f,  -0.5f, -0.5f, 1.0f,  0.0f,  0.0f,  0.0f, 1.0f, // 14
+    0.5f,  -0.5f, 0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, // 15
 
-    // ---- Top face (Y+) ----
-    -0.5f,
-    0.5f,
-    0.5f,
-    0,
-    1,
-    0,
-    0,
-    0,
-    0.5f,
-    0.5f,
-    0.5f,
-    0,
-    1,
-    0,
-    1,
-    0,
-    0.5f,
-    0.5f,
-    -0.5f,
-    0,
-    1,
-    0,
-    1,
-    1,
-    -0.5f,
-    0.5f,
-    -0.5f,
-    0,
-    1,
-    0,
-    0,
-    1,
+    -0.5f, -0.5f, -0.5f, 0.0f,  -1.0f, 0.0f,  0.0f, 1.0f, // 16
+    0.5f,  -0.5f, -0.5f, 0.0f,  -1.0f, 0.0f,  1.0f, 1.0f, // 17
+    0.5f,  -0.5f, 0.5f,  0.0f,  -1.0f, 0.0f,  1.0f, 0.0f, // 18
+    -0.5f, -0.5f, 0.5f,  0.0f,  -1.0f, 0.0f,  0.0f, 0.0f, // 19
+
+    -0.5f, 0.5f,  -0.5f, 0.0f,  1.0f,  0.0f,  0.0f, 1.0f, // 20
+    0.5f,  0.5f,  -0.5f, 0.0f,  1.0f,  0.0f,  1.0f, 1.0f, // 21
+    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f, // 22
+    -0.5f, 0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f  // 23
 };
 
 const size_t verticesSize = sizeof(cubeVertices);
@@ -220,6 +52,58 @@ unsigned int cubeIndices[] = {
 const size_t indicesSize = sizeof(cubeIndices);
 size_t indexCount = 36;
 
+// Texture co-ordinates for the skybox cubemap
+const float skyboxVertices[] = {
+    // Positions
+    -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f,
+    1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f,
+
+    -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f,
+    -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,
+
+    1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f, -1.0f,
+
+    -1.0f, -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f, -1.0f, 1.0f,
+
+    -1.0f, 1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  1.0f,
+    1.0f,  1.0f,  1.0f,  -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f,
+
+    -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f,
+    1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, 1.0f};
+
+const size_t skyboxVertexCount = 108;
+
+Skybox setup_skybox(GLuint shader) {
+  Skybox box;
+  box.vertices = malloc(sizeof(float) * skyboxVertexCount);
+  box.textures = malloc(sizeof(Texture));
+
+  memcpy(box.vertices, skyboxVertices, sizeof(skyboxVertices));
+
+  glUseProgram(shader);
+
+  GLuint vao, vbo;
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
+
+  glGenBuffers(1, &vbo);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), box.vertices,
+               GL_STATIC_DRAW);
+
+  glEnableVertexAttribArray(0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void *)0);
+
+  box.vao = vao;
+  box.vertexCount = 36;
+  box.textures[0] = load_cubemap("../assets/textures/SKYBOX");
+
+  glBindVertexArray(0);
+
+  return box;
+}
 static size_t generate_vertices(Vertex *vertices, int sectors, int stacks) {
   float stackAngle, sectorAngle, xy;
   float r = 1.0f;
@@ -279,12 +163,21 @@ static size_t generate_indices(unsigned int *indices, int sectors, int stacks) {
   return current;
 }
 
-void populate_sphere(Sphere *sphere, int sectors, int stacks) {
+Sphere populate_sphere(int sectors, int stacks) {
+  Sphere sphere;
   unsigned int vertexCount = (sectors + 1) * (stacks + 1);
   unsigned int indexCount = sectors * stacks * 6;
+  sphere.textureCount = 1;
 
-  sphere->vertices = malloc(vertexCount * sizeof(Vertex));
-  sphere->indices = malloc(sizeof(unsigned int) * indexCount);
-  sphere->vertexCount = generate_vertices(sphere->vertices, sectors, stacks);
-  sphere->indexCount = generate_indices(sphere->indices, sectors, stacks);
+  sphere.vertices = malloc(vertexCount * sizeof(Vertex));
+  sphere.indices = malloc(sizeof(unsigned int) * indexCount);
+  sphere.textures = malloc(sizeof(Texture) * sphere.textureCount);
+  sphere.vertexCount = generate_vertices(sphere.vertices, sectors, stacks);
+  sphere.indexCount = generate_indices(sphere.indices, sectors, stacks);
+
+  for (int i = 0; i < sphere.textureCount; i++) {
+    sphere.textures[i] = load_texture("../assets/textures", "textureimage.jpg");
+  }
+
+  return sphere;
 }

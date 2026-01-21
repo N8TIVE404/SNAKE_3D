@@ -7,7 +7,9 @@
 #include "mesh.h"
 #include "mvp.h"
 #include "primitives.h"
+#include "render.h"
 #include "shaders.h"
+#include "textures.h"
 #include "window.h"
 
 int main(void) {
@@ -16,29 +18,50 @@ int main(void) {
   GLuint shader =
       create_program("../assets/shaders", "shader.vert", "shader.frag");
   INFO_LOG("Created a shader program with ID %d.", shader);
-  glUseProgram(shader);
+
+  GLuint boxShader =
+      create_program("../assets/shaders", "skybox.vert", "skybox.frag");
+  INFO_LOG("Created a shader program with ID %d.", boxShader);
+
   float lastTime = 0.0f;
   Camera cam = initialize_camera(45.0f, (vec3){0.0f, 0.0f, 3.0f});
 
-  Cube cube = setup_cube();
-  Sphere sphere;
-  setup_sphere(&sphere);
-
-  glfwSetWindowUserPointer(window, &cam);
-
+  Mesh cube = setup_cube();
   Position pos;
   glm_vec3_copy((vec3){0.0f, 0.0f, 0.0f}, pos.location);
   glm_vec3_copy((vec3){0.0f, 1.0f, 0.0f}, pos.axis);
   glm_vec3_copy((vec3){0.5f, 0.5f, 0.5f}, pos.scale);
   pos.angle = 20.0f;
 
+  Mesh sphere = setup_sphere();
   Position pos2;
   glm_vec3_copy((vec3){1.0f, 1.0f, 0.0f}, pos2.location);
   glm_vec3_copy((vec3){0.0f, 1.0f, 0.0f}, pos2.axis);
   glm_vec3_copy((vec3){0.5f, 0.5f, 0.5f}, pos2.scale);
   pos2.angle = 20.0f;
 
+  Skybox box = setup_skybox(boxShader);
+  Position boxPos;
+  glm_vec3_copy((vec3){0.0f, 0.0f, 0.0f}, boxPos.location);
+  glm_vec3_copy((vec3){0.0f, 1.0f, 0.0f}, boxPos.axis);
+  glm_vec3_copy((vec3){0.1f, 0.1f, 0.1f}, boxPos.scale);
+  glm_mat4_identity(boxPos.view);
+  glm_mat4_identity(boxPos.projection);
+
+  glfwSetWindowUserPointer(window, &cam);
+
+  glUseProgram(shader);
   GLuint uniformMvp = glGetUniformLocation(shader, "mvp");
+  GLuint uniformTex = glGetUniformLocation(shader, "tex");
+  glUniform1i(uniformTex, 0);
+
+  glUseProgram(boxShader);
+  GLuint uniformCubeSampler = glGetUniformLocation(boxShader, "cubeSampler");
+  GLuint uniformView = glGetUniformLocation(boxShader, "view");
+  GLuint uniformProjection = glGetUniformLocation(boxShader, "projection");
+
+  glUniform1i(uniformCubeSampler, 10);
+
   glEnable(GL_DEPTH_TEST);
 
   while (!glfwWindowShouldClose(window)) {
@@ -49,25 +72,13 @@ int main(void) {
     glClearColor(0.6f, 0.2f, 0.6f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(shader);
-    glBindVertexArray(sphere.vao);
+    draw_skybox(&box, &cam, &boxPos, boxShader, uniformView, uniformProjection);
 
-    mat4 mvp;
-    calculate_mvp(&cam, &pos2, &mvp);
+    draw_mesh(&cube, &cam, &pos2, shader, uniformMvp);
     pos2.angle += 1.0f;
 
-    glUniformMatrix4fv(uniformMvp, 1, GL_FALSE, (float *)mvp);
-
-    glDrawElements(GL_TRIANGLES, (int)sphere.indexCount, GL_UNSIGNED_INT, 0);
-
-    glBindVertexArray(cube.vao);
-    glm_mat4_identity(mvp);
-    calculate_mvp(&cam, &pos, &mvp);
-    pos2.angle += 2.0f;
-
-    glUniformMatrix4fv(uniformMvp, 1, GL_FALSE, (float *)mvp);
-
-    glDrawElements(GL_TRIANGLES, (int)cube.indexCount, GL_UNSIGNED_INT, 0);
+    draw_mesh(&sphere, &cam, &pos, shader, uniformMvp);
+    pos.angle += 1.0f;
 
     process_kbinput(window);
     glfwPollEvents();
