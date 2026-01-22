@@ -19,6 +19,7 @@ void draw_mesh(Mesh *mesh, Camera *cam, Position *pos, GLuint shader,
   glBindTexture(GL_TEXTURE_2D, mesh->textures[0].textureID);
 
   glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_INT, 0);
+  glBindVertexArray(0);
 }
 
 void draw_skybox(Skybox *box, Camera *cam, Position *pos, GLuint shader,

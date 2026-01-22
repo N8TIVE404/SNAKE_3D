@@ -9,6 +9,7 @@
 #include "primitives.h"
 #include "render.h"
 #include "shaders.h"
+#include "terrain.h"
 #include "textures.h"
 #include "window.h"
 
@@ -24,7 +25,20 @@ int main(void) {
   INFO_LOG("Created a shader program with ID %d.", boxShader);
 
   float lastTime = 0.0f;
-  Camera cam = initialize_camera(45.0f, (vec3){0.0f, 0.0f, 3.0f});
+  Camera cam = initialize_camera(45.0f, (vec3){8000.0f, 1200.0f, 5000.0f});
+  glfwSetWindowUserPointer(window, &cam);
+
+  Terrain terrain = load_terrain();
+  Position base = {.scale = {13.5f, 13.5f, 13.5f},
+                   .angle = 0.0f,
+                   .location = {0.0f, 0.0f, -8000.0f},
+                   .axis = {1.0f, 0.0f, 1.0f}};
+  glm_mat4_identity(base.projection);
+  glm_mat4_identity(base.model);
+  glm_mat4_identity(base.view);
+
+  glUseProgram(terrain.shader);
+  GLuint terrainMvp = glGetUniformLocation(terrain.shader, "mvp");
 
   Mesh cube = setup_cube();
   Position pos;
@@ -47,8 +61,6 @@ int main(void) {
   glm_vec3_copy((vec3){0.1f, 0.1f, 0.1f}, boxPos.scale);
   glm_mat4_identity(boxPos.view);
   glm_mat4_identity(boxPos.projection);
-
-  glfwSetWindowUserPointer(window, &cam);
 
   glUseProgram(shader);
   GLuint uniformMvp = glGetUniformLocation(shader, "mvp");
@@ -80,6 +92,8 @@ int main(void) {
     draw_mesh(&sphere, &cam, &pos, shader, uniformMvp);
     pos.angle += 1.0f;
 
+    render_terrain(&terrain, &cam, &base, terrainMvp);
+
     process_kbinput(window);
     glfwPollEvents();
     glfwSwapBuffers(window);
@@ -89,6 +103,8 @@ int main(void) {
   destroy_window(window);
   free(sphere.vertices);
   free(sphere.indices);
+  free(terrain.vertices);
+  free(terrain.indices);
 
   return 0;
 }

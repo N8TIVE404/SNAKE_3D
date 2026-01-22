@@ -1,6 +1,7 @@
 assets/models
 assets/textures
 assets/sphere
+assets/heightmaps
 dependencies/
 build/
 .cache/

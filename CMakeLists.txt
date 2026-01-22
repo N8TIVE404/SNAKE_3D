@@ -44,6 +44,7 @@ set(SOURCES
   dependencies/glad.c
   loaders/shaders.c
   loaders/textures.c
+  loaders/terrain.c
   geometry/mesh.c
   geometry/primitives.c
   dependencies/stb.c

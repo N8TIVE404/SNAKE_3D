@@ -9,7 +9,7 @@ Camera initialize_camera(float fov, vec3 location) {
   glm_vec3_copy((vec3){0.0f, 1.0f, 0.0f}, cam.up);
   glm_vec3_copy((vec3){0.0f, 0.0f, 0.0f}, cam.target);
   cam.fov = glm_rad(fov);
-  cam.speed = 1.5f;
+  cam.speed = 30.5f;
   cam.yaw = -90.0f;
   cam.pitch = 0.0f;
   cam.deltaTime = 0.0f;

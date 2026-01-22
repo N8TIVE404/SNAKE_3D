@@ -22,7 +22,7 @@ void calculate_view(Camera *cam, Position *pos) {
 
 void calculate_projection(Camera *cam, Position *pos) {
   glm_mat4_identity(pos->projection);
-  glm_perspective(cam->fov, (float)width / height, 1.0f, 100.0f,
+  glm_perspective(cam->fov, (float)width / height, 1.0f, 10000.0f,
                   pos->projection);
 }
 
