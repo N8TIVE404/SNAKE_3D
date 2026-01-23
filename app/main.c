@@ -16,6 +16,10 @@
 int main(void) {
   GLFWwindow *window = initilaize_window();
 
+  Camera cam = initialize_camera(45.0f, (vec3){0.0f, 10.0f, 50.0f});
+  glfwSetWindowUserPointer(window, &cam);
+  initialize_mouse_callback(window);
+
   GLuint shader =
       create_program("../assets/shaders", "shader.vert", "shader.frag");
   INFO_LOG("Created a shader program with ID %d.", shader);
@@ -25,8 +29,6 @@ int main(void) {
   INFO_LOG("Created a shader program with ID %d.", boxShader);
 
   float lastTime = 0.0f;
-  Camera cam = initialize_camera(45.0f, (vec3){8000.0f, 1200.0f, 5000.0f});
-  glfwSetWindowUserPointer(window, &cam);
 
   Terrain terrain = load_terrain();
   Position base = {.scale = {13.5f, 13.5f, 13.5f},
@@ -92,7 +94,7 @@ int main(void) {
     draw_mesh(&sphere, &cam, &pos, shader, uniformMvp);
     pos.angle += 1.0f;
 
-    render_terrain(&terrain, &cam, &base, terrainMvp);
+    //    render_terrain(&terrain, &cam, &base, terrainMvp);
 
     process_kbinput(window);
     glfwPollEvents();

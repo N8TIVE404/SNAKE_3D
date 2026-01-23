@@ -3,6 +3,6 @@
 
 struct GLFWwindow;
 void process_kbinput(struct GLFWwindow *);
-void process_mouse_input(struct GLFWwindow *);
+void initialize_mouse_callback(struct GLFWwindow *);
 
 #endif
