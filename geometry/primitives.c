@@ -98,7 +98,7 @@ Skybox setup_skybox(GLuint shader) {
 
   box.vao = vao;
   box.vertexCount = 36;
-  box.textures[0] = load_cubemap("../assets/textures/SKYBOX");
+  box.textures[0] = load_cubemap("../assets/textures/SKYBOX/clear_sky/");
 
   glBindVertexArray(0);
 
@@ -120,9 +120,9 @@ static size_t generate_vertices(Vertex *vertices, int sectors, int stacks) {
       sectorAngle = j * cSector;
 
       // Set the vertices
-      vertices[current].position[0] = xy * cosf(sectorAngle);
-      vertices[current].position[1] = xy * sinf(sectorAngle);
-      vertices[current].position[2] = r * sinf(stackAngle);
+      vertices[current].position[0] = xy * cosf(sectorAngle) * GLOBAL_SCALE;
+      vertices[current].position[1] = xy * sinf(sectorAngle) * GLOBAL_SCALE;
+      vertices[current].position[2] = r * sinf(stackAngle) * GLOBAL_SCALE;
 
       vertices[current].normal[0] = vertices[current].position[0] / lengthInv;
       vertices[current].normal[1] = vertices[current].position[1] / lengthInv;

@@ -28,7 +28,6 @@ include_directories(
     dependencies/
     loaders/
     geometry/
-    input/
     render/
     ${GLFW_INCLUDE_DIRSW_INCLUDE_DIRS}
     ${ASSIMP_INCLUDE_DIRS}
@@ -38,8 +37,9 @@ include_directories(
 set(SOURCES
   app/main.c
   scene/camera.c
-  core/mvp.c
   core/logger.c
+  scene/camera_system.c
+  scene/camera_controller.c
   core/window.c
   dependencies/glad.c
   loaders/shaders.c
@@ -48,7 +48,6 @@ set(SOURCES
   geometry/mesh.c
   geometry/primitives.c
   dependencies/stb.c
-  input/input.c
   render/render.c
 )
 

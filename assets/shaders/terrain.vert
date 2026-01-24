@@ -1,11 +1,12 @@
 # version 330 core
 
 layout (location = 0) in vec3 aPosition;
+layout (location = 1) in vec2 aTexture;
 
-out float height;
 uniform mat4 mvp;
+out vec2 textureCoords;
 
 void main(){
-  height = aPosition.y;
+  textureCoords = aTexture;
   gl_Position = mvp * vec4(aPosition, 1.0f);
 }

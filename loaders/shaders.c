@@ -32,8 +32,6 @@ char *load_shader(const char *dir, const char *fileName) {
     return NULL;
   }
 
-  DEBUG_LOG("File is %zu bytes.", (size_t)size);
-
   if (fseek(file, 0, SEEK_SET)) {
     WARNING_LOG("Error while resetting file pointer! (%s)", strerror(errno));
     return NULL;
@@ -80,7 +78,6 @@ unsigned int create_program(const char *dir, const char *vertexName,
     _exit(EXIT_FAILURE);
   }
 
-  DEBUG_LOG("Vertex Shader done.");
   free(vertexCode);
 
   char *fragmentCode = load_shader(dir, fragmentName);

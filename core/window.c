@@ -34,13 +34,10 @@ GLFWwindow *initilaize_window() {
 
   glfwMakeContextCurrent(window);
 
-  DEBUG_LOG("Created window successfully.");
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     FATAL_LOG("Failed to load GLAD");
     _exit(EXIT_FAILURE);
   }
-
-  DEBUG_LOG("Loaded GLAD successfully.");
 
   glfwGetFramebufferSize(window, &width, &height);
   glViewport(0, 0, width, height);

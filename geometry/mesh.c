@@ -15,9 +15,9 @@ Mesh setup_cube() {
 
   int offset = 8;
   for (int i = 0; i < cube.vertexCount; i++) {
-    cube.vertices[i].position[0] = cubeVertices[offset * i + 0];
-    cube.vertices[i].position[1] = cubeVertices[offset * i + 1];
-    cube.vertices[i].position[2] = cubeVertices[offset * i + 2];
+    cube.vertices[i].position[0] = cubeVertices[offset * i + 0] * GLOBAL_SCALE;
+    cube.vertices[i].position[1] = cubeVertices[offset * i + 1] * GLOBAL_SCALE;
+    cube.vertices[i].position[2] = cubeVertices[offset * i + 2] * GLOBAL_SCALE;
 
     cube.vertices[i].normal[0] = cubeVertices[offset * i + 3];
     cube.vertices[i].normal[1] = cubeVertices[offset * i + 4];

@@ -4,9 +4,8 @@
 
 #include "logger.h"
 
-// TODO: Add color codes specific to a log level
-
 const char *levelStrings[] = {"[FATAL]", "[INFO]", "[DEBUG]", "[WARNING]"};
+const char *colorCodes[] = {"[31m", "[32m", "[35m", "[33m", "\033", "[0m"};
 
 void log_output(LOG_LEVEL level, const char *formatString, ...) {
   char output[32000];
@@ -18,7 +17,8 @@ void log_output(LOG_LEVEL level, const char *formatString, ...) {
 
   char finalOutput[32000];
   memset(finalOutput, 0, sizeof(finalOutput));
-  snprintf(finalOutput, sizeof(finalOutput), "%s: %s\n", levelStrings[level],
-           output);
+  snprintf(finalOutput, sizeof(finalOutput), "%s%s%s: %s%s%s\n",
+           colorCodes[LEVEL_COUNT], colorCodes[level], levelStrings[level],
+           output, colorCodes[LEVEL_COUNT], colorCodes[LEVEL_COUNT + 1]);
   printf("%s", finalOutput);
 }

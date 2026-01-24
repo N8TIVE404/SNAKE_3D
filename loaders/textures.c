@@ -39,8 +39,8 @@ Texture load_texture(const char *directory, const char *file) {
 }
 
 Texture load_cubemap(const char *fullPath) {
-  const char *skyboxFaces[6] = {"px.jpg", "nx.jpg", "py.jpg",
-                                "ny.jpg", "pz.jpg", "nz.jpg"};
+  const char *skyboxFaces[6] = {"px.png", "nx.png", "py.png",
+                                "ny.png", "pz.png", "nz.png"};
 
   GLuint textureID;
   glGenTextures(1, &textureID);

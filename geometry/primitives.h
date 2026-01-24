@@ -7,6 +7,7 @@
 
 #define LOCATION_COMPONENTS 3
 #define PI 3.14159265358979323846
+#define GLOBAL_SCALE 2.0f
 
 extern const float cubeVertices[];
 extern const size_t verticesSize;

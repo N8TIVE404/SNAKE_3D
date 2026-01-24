@@ -12,13 +12,17 @@ typedef struct Position {
 } Position;
 
 typedef struct Camera {
-  vec3 position;
-  vec3 front;
-  vec3 up;
-  vec3 target;
-  float fov, speed, yaw, pitch, deltaTime;
+  vec3 position, forward, right, up;
+
+  float yaw, pitch, fov, aspect, nearZ, farZ;
+
+  mat4 view, projection;
+
+  bool isDirty;
 } Camera;
 
-Camera initialize_camera(float, vec3);
+/* Lifecycle */
+void initialize_camera(Camera *cam, float fov_rad, float aspect, float near,
+                       float far, vec3 position);
 
 #endif

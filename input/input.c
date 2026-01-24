@@ -45,10 +45,10 @@ static void cursor_callback(GLFWwindow *window, double posX, double posY) {
     return;
   }
 
-  float offsetX = lastX - posX;
+  float offsetX = posX - lastX;
   lastX = posX;
 
-  float offsetY = posY - lastY;
+  float offsetY = lastY - posY;
   lastY = posY;
 
   offsetX *= 0.1f;
